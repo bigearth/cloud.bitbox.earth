@@ -30,17 +30,16 @@ module.exports = {
             // localIdentName: '[name]'
             // localIdentName: '[path][name]__[local]--[hash:base64:5]'
           }
+        }, {
+          loader: 'sass-loader'
         }
       ]
     }]
   },
-  node: {
-   fs: "empty"
-   },
-   plugins: [
+  plugins: [
     new HtmlWebpackPlugin({
-      title: 'query.cash',
-      template: 'public/index.html',
+      title: 'BITBOX',
+      template: 'src/index.html',
       filename: 'index.html'
     })
   ]

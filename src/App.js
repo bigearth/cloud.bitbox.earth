@@ -1,92 +1,101 @@
+// react imports
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect,
+  NavLink
+} from 'react-router-dom';
 
-import './App.css';
-let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
-let BITBOX = new BITBOXCli({
-  protocol: 'http',
-  host: '127.0.0.1',
-  port: 8332,
-  username: '',
-  password: '',
-  corsproxy: false
-});
+// custom components
+import BitboxCli from './components/BitboxCli';
+import Docs from './components/Docs';
+import Homepage from './components/Homepage';
 
-let langs = [
-  'english',
-  'chinese_simplified',
-  'chinese_traditional',
-  'korean',
-  'japanese',
-  'french',
-  'italian',
-  'spanish'
-]
-
-let lang = langs[Math.floor(Math.random()*langs.length)];
-
-// create 256 bit BIP39 mnemonic
-let mnemonic = BITBOX.Mnemonic.generate(256, BITBOX.Mnemonic.wordLists()[lang])
-
-// mnemonic to BIP32 root seed encoded as hex
-let rootSeed = BITBOX.Mnemonic.toSeed(mnemonic)
-
-// root seed to BIP32 master HD Node
-let masterHDNode = BITBOX.HDNode.fromSeed(rootSeed)
-
-// derive BIP 44 external receive address
-let childNode = BITBOX.HDNode.derivePath(masterHDNode, "m/44'/145'/0'/0/0")
-
-// instance of transaction builder
-let transactionBuilder = new BITBOX.TransactionBuilder('bitcoincash');
-
-// keypair of BIP44 receive address
-let keyPair = childNode.keyPair;
-
-// txid of utxo
-let txid = '5699610b1db28d77b1021ed457d5d9010900923143757bc8698083fa796b3307';
-
-// subtract fee from original amount
-let originalAmount = 3678031;
-
-// add input txid, vin 1 and keypair
-transactionBuilder.addInput(txid, 1);
-
-// calculate fee @ 1 sat/B
-let byteCount = BITBOX.BitcoinCash.getByteCount({ P2PKH: 1 }, { P2PKH: 1 });
-
-let sendAmount = originalAmount - byteCount;
-
-// add receive address and send amount
-transactionBuilder.addOutput('bitcoincash:qpuax2tarq33f86wccwlx8ge7tad2wgvqgjqlwshpw', sendAmount);
-
-// sign tx
-let redeemScript;
-transactionBuilder.sign(0, keyPair, redeemScript, transactionBuilder.hashTypes.SIGHASH_ALL, originalAmount);
-
-// build it and raw hex
-let tx = transactionBuilder.build();
-let hex = tx.toHex();
-BITBOX.RawTransactions.sendRawTransaction(hex).then((result) => { console.log("Broadcast Result: "+result); }, (err) => { console.log("Broadcast Error: "+err); });
-
+// css
+import './styles/app.scss';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mnemonic: mnemonic,
-      lang: lang,
-      hex: hex,
+
+  handlePathMatch(path) {
+    if(path === '/' || path === '/blocks' || path === '/transactions' || path === '/logs' || path === '/configuration/accounts-and-keys') {
+      return true;
+    } else {
+      return false;
     }
   }
 
   render() {
+
+    const pathMatch = (match, location) => {
+      if (!match) {
+        return false
+      }
+      return this.handlePathMatch(match.path);
+    }
+
+    const DocsPage = (props) => {
+      return (
+        <Docs
+        />
+      );
+    };
+
+    const BitboxCliPage = (props) => {
+      return (
+        <BitboxCli
+        />
+      );
+    };
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src="https://www.bitbox.earth/assets/logo.png" className="App-logo" alt="logo" />
-          <h1 className="App-title">BITBOX Cloud</h1>
-        </header>
-      </div>
+      <Router>
+        <div>
+          <div className="header">
+            <div className="home-menu main-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+              <Link className="pure-menu-heading header-logo" to="/">
+                <img src={'/assets/logo.png'} /> <br />BitBox
+              </Link>
+
+              <ul className="pure-menu-list">
+                <li className="pure-menu-item">
+                  <NavLink
+                    isActive={pathMatch}
+                    activeClassName="pure-menu-selected"
+                    className="pure-menu-link"
+                    to="/docs/gettingstarted">
+                    <i className="fas fa-book"></i> Docs
+                  </NavLink>
+                </li>
+                <li className="pure-menu-item">
+                  <NavLink
+                    isActive={pathMatch}
+                    activeClassName="pure-menu-selected"
+                    className="pure-menu-link"
+                    to="/bitboxcli/bitcoincash">
+                    <i className="fa fa-code"></i> bitbox-cli
+                  </NavLink>
+                </li>
+                <li className="pure-menu-item">
+                  <a
+                    className="pure-menu-link"
+                    href="https://bigearth.github.io/bitblog/">
+                    <i className="fas fa-keyboard"></i> Blog
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <Switch>
+            <Route path="/docs" component={DocsPage}/>
+            <Route path="/bitboxcli" component={BitboxCliPage}/>
+            <Route exact path="/" component={Homepage}/>
+            <Redirect from='*' to='/' />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
