@@ -26,23 +26,10 @@ class Homepage extends Component {
       <div>
         <div className="splash-container">
           <div className="splash">
-            <h1 className="splash-head">YOUR $BCH TOOLKIT</h1>
+            <h1 className="splash-head">BITBOX Cloud</h1>
             <p className="splash-subhead">
-              SUPERCHARGE your Bitcoin Cash workflow.
+              Digital Ocean meets Heroku for Bitcoin Cash.
             </p>
-            <p>
-              <a href="https://github.com/bigearth/bitbox-gui/releases/download/0.7.2/BITBOX-0.7.2.dmg" className="pure-button pure-button-primary">
-                <i className="fab fa-apple"></i> Download (MacOS)
-              </a>
-            </p>
-            <div>
-              <p className="splash-subhead install">
-              INSTALL VIA NPM
-              </p>
-              <p>
-                <code>npm install bitbox-cli --global</code>
-              </p>
-            </div>
           </div>
         </div>
         <div className="content-wrapper">
