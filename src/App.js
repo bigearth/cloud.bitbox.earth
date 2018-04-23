@@ -10,8 +10,7 @@ import {
 } from 'react-router-dom';
 
 // custom components
-import BitboxCli from './components/BitboxCli';
-import Docs from './components/Docs';
+import Test from './components/Test';
 import Homepage from './components/Homepage';
 
 // css
@@ -61,6 +60,7 @@ class App extends Component {
             </div>
           </div>
           <Switch>
+            <Route exact path="/test" component={Test}/>
             <Route exact path="/" component={Homepage}/>
             <Redirect from='*' to='/' />
           </Switch>
