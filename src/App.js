@@ -50,7 +50,7 @@ class App extends Component {
               <img src='https://www.bitbox.earth/assets/logo.png' /> <br />BitBox
             </Link>
             <ul className="pure-menu-list">
-              <li className="pure-menu-item"><a href="#" className="pure-menu-link">Pricing</a></li>
+              <li className="pure-menu-item"><a href="https://www.bitbox.earth" className="pure-menu-link">Docs</a></li>
               <li className="pure-menu-item">
                 <a className="pure-menu-link" href="https://market.bitbox.earth">
                   Market
