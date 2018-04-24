@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
 
-import Installation from './Installation';
-import GettingStarted from './GettingStarted';
-import Conversion from './Conversion';
-import SignAndVerify from './SignAndVerify';
-import Configuration from './Configuration';
-import BitboxNew from './BitboxNew';
-import BitboxConsole from './BitboxConsole';
-import BitboxPaper from './BitboxPaper';
-import BitboxProxy from './BitboxProxy';
 
 import {
   Link
