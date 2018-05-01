@@ -10,8 +10,7 @@ import {
 } from 'react-router-dom';
 
 // custom components
-import BitboxCli from './components/BitboxCli';
-import Docs from './components/Docs';
+import Test from './components/Test';
 import Homepage from './components/Homepage';
 
 // css
@@ -36,13 +35,6 @@ class App extends Component {
       return this.handlePathMatch(match.path);
     }
 
-    const DocsPage = (props) => {
-      return (
-        <Docs
-        />
-      );
-    };
-
     const BitboxCliPage = (props) => {
       return (
         <BitboxCli
@@ -53,12 +45,18 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <div className="header">
-            <div className="home-menu main-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-              <Link className="pure-menu-heading header-logo" to="/">
-                <img src={'/assets/logo.png'} /> <br />BitBox
-              </Link>
-            </div>
+          <div className="pure-menu pure-menu-horizontal">
+            <Link className="pure-menu-heading header-logo" to="/">
+              <img src='https://www.bitbox.earth/assets/logo.png' /> <br />BitBox
+            </Link>
+            <ul className="pure-menu-list">
+              <li className="pure-menu-item"><a href="https://www.bitbox.earth" className="pure-menu-link">Docs</a></li>
+              <li className="pure-menu-item">
+                <a className="pure-menu-link" href="https://market.bitbox.earth">
+                  Market
+                </a>
+              </li>
+            </ul>
           </div>
           <Switch>
             <Route exact path="/" component={Homepage}/>
