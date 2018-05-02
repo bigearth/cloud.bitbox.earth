@@ -42,10 +42,10 @@ module.exports = {
       template: 'src/index.html',
       filename: 'index.html'
     }),
-    new CopyWebpackPlugin({
+    new CopyWebpackPlugin([{
         from: 'src/assets/',
         to: './assets/',
         toType: 'dir'
-    })
+    }])
   ]
 };
